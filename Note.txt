@@ -1,0 +1,314 @@
+﻿__MVC partern__
+Model: Xử lý db và logic
+View: Hiển thị thông tin cho User
+Controller: Điều phối các luồng hoạt động, nhận và trả kết quả
+Ngoài ra, Thông thường sẽ có Router để định tuyến đến loại Controller nào dựa vào request của User
+
+ 
+                     (định tuyến đến Controller)    (gửi request và      )   (thực hiện logic hoặc ) 
+(request 1 url)      (nào sẽ thực thi          )    (nhận result từ Model)   (lấy dữ liệu từ DB    )   (Nơi lưu dữ liệu)
+User ----------------> Router ---------------------> Controller <------------> Model <----------------> DataBase
+                                                         ^|
+     <-Controller trả kết quả html cho User-----------   ||
+                                                         ||
+                             (View trả về kết quả html)  || Controller Forward(chuyển tiếp)
+                             (cho Controller          )  |v result cho View
+                                                      Views
+ 						     (Nhận result từ Controller)
+						     (Swap vào các template html)
+
+                                         
+
+
+- Check version .net core: dotnet --version
+- Location folder: C:\Program Files\dotnet\sdk
+- CLI(Command Line Interface): giao diện dòng lệnh.
+Cần install SDK .net core để có thể sử dụng
+Syntax: dotnet [verb] [arg]
+
+__Cấu trúc Project Asp.net__
+* Connected Services: Add service từ bên ngoài vào
+* Properties: Chứa file launchSettings.json
+launchSettings.json: Chứa profiles để run App(IIS Express và dotnet CLI)
+* appsettings.json: Chưa các cấu hình chung của project
+* appsettings.Development.json hoặc appsettings.Production.json: Hỗ trợ làm việc đa môi trường
+* wwwroot: Root của project, thường lưu thông tin file tĩnh(html,css,js,...) để reference path dễ
+* Nuget: Thư mục chứa các package
+Có 3 cách để add package cho Nuget:
+1. Add trong thư mục .csproject
+2. Add bằng install nuget
+3. Add bằng run command package console
+* libman.json: Lưu trữ thông tin các library được download về project(bootstrap,jquery,...)
+Click Manage Client-Side Libraries thì project sẽ gen ra file
+* Program.cs: 
+Tạo hosting
+Tạo server Kestrel(server default của Asp.net) sử dụng Startup class để setting base config
+* Startup.cs: 
+Configure: Đăng kí các service cho dependency injection(phụ thuộc được thêm vào)
+ConfigureServices: Cấu hình request pipeline và cấu hình các middleware
+
+__Mô hình Webserver__
+Kestrel: Là 1 webserver(opensource) default của Asp.net core
+HttpSys: Là 1 webserver(opensource) khác của Asp.net core
+IIS: là 1 webserver standard của Asp.net gắn liền với Windows
+Nginx,Apache: là webserver dành cho môi trường Linux
++ Mô hình 1: Mô hình này chỉ cho môi trường development(Để nhanh gọn, nên không đầy đủ các tính năng bảo mật.)
+Internet <-> Kestrel <-> WebApplicaton
++ Mô hình 2: Mô hình này chỉ cho môi trường production(Sẽ chậm hơn, Đầy đủ các tính năng bảo mật.)
+Với windows: Internet <-> IIS <-> Kestrel <-> WebApplicaton
+
+__Request pipeline & Middleware__
+- Request pipeline: Cấu hình xử lý từ việc nhận request vào và trả về reponse
+Gồm nhiều Middleware, mỗi Middleware là 1 module code trong pipeline can thiệp và xử lý request và reponse trong pipeline.
+
+- context: bao gồm thông tin meta data của request
+__Một số cách tạo Middleware__
+* Sử dụng app.Use():
+- app.Use(context,nextMiddleware): Middleware trung gian, 
+Cần sử dụng nextMiddleware.Invoke() để next sang middleware tiếp theo
+- app.Run(context): Middleware đầu cuối(Terminal middleware)
+- app.UseEndpoints(endpoints): Middleware đầu cuối(Terminal middleware)
+- Có thể add middleware từ bên ngoài.
+* Tạo class bên ngoài và call app.UseMiddleware<class>();
+Yêu cầu file class middleware: Contructor is public, không sử dụng static cho request
+* Sử dụng extension method:
+Yêu cầu class extension method: class và method đều sử dụng static
+
+__Sử dụng config__
+- Đa dạng về nhiều định dạng: File (Json,xml,ini), argument, environment variable, customer provider
+- Sử dụng Configuration.GetSection("{Key}").Value để lấy value
+
+__Static file__
+- Chỉ cần thông qua static middleware chứ không cần phải thông qua tất cả các middleware của pipeline(tốc độ nhanh)
+- Có 2 cách use để :Trực tiếp hoặc thông qua Controler Action
+- Sử dụng app.UseStaticFiles() để sử dụng static file
+
+__Rootpath__
+- Có thể thay đổi .UseContentRoot(Default là thư mục project) và 
+.UseWebRoot(default là thư mục wwwroot) khi excecute CreateWebHostBuilder ở Program class
+
+__Security__
+- Những gì được xem là public thì để vào UseWebRoot(wwwroot) vì ở đây không có cơ chế chặn truy cập
+- Những gì được xem là private theo quyền, cần sử dụng Controller Action để check Action result rồi mới cho phép truy cập
+
+_MVC_
+- service.AddMvc(); // Chỉ ra sẽ sử dụng MVC pattern
+- Sử dụng IActionResult ở Index(): để có thể return về 1 View(), mỗi IActionResult ứng với 1 View.
+- Mỗi View sẽ có 1 Controller tương ứng.
+- Ở view sử dụng keyword @model namespace để import vào model để sử dụng
+
+_Controller_
+- Xử lý request
+- Build Model
+- Return reponse
+
+_Router_(Gồm Base router và Attribute router)
+- Mapping request cho từng Controller,Action
+- Generate các Url để redirect
+
+_Base router_(Cấu hình trong startup class)
+- app.UseMvcWithDefaultRoute(); // Sử dụng router default
+- app.UseMvc(routes => // Tự config router
+            {
+		// Các routes sẽ map theo thứ tự trên xuống, 1 request chỉ map vs 1 routes
+                routes.MapRoute("default", "{controller}/{action}/{id?}"); // Url bắt buộc phải có controller và action, id được phép trống
+                routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}"); // Url không bắt buộc phải có controller(default = Home) và action(default = Index), id được phép trống
+                routes.MapRoute("default", "{area}/{controller=Home}/{action=Index}/{id?}"); // Url bắt buộc phải có format: {area}/{controller=Home}/{action=Index}/{id?}
+                routes.MapRoute("default", "admin/{controller=Home}/{action=Index}/{id?}"); // Url bắt buộc phải có format: admin/{controller=Home}/{action=Index}/{id?}
+		routes.MapRoute("default","admin", new {
+	                    Controllers ="Home",
+        	            Action = "Index"
+                	});
+            });
+
+_Attribute router_(Cấu hình trực tiếp trong method)
+- app.UseMvc(); // Sử dụng router trong attribute của controller
+- Add attribute [Route("{Controller}")] ở Controller class
+- Có thể sử dụng nhiều attribute [Route] cho xử lý(nhiều url chung 1 trang kết quả)
+[Route("Home")]
+[Route("Customer/vip/{id?}")]
+public IActionResult Index()
+  {
+     return View();
+  }
+
+_Route Constraint_
+- Giúp phân biệt 2 Route giống url pattern
+vd: Sử Route Constraint có thể map url tới Controller 
+routes.MapRoute("default", "post/{id:int}", // Id nhận kiểu Int
+                 new { Controllers = "Post", Action = "PostsByID"}
+               );
+routes.MapRoute("default", "post/{id:alpha}", // Id nhận kiểu Alpha(kiểu chữ)
+                 new { Controllers = "Post", Action = "PostsByName" }
+               );
+- Có thể validate url
+vd:
+routes.MapRoute("default", "{Controller=Home}/{action=Index}/{id:alpha:minlength(6)?}"); // id kiểu alpha(chữ) và từ 6 kí tự trở lên
+routes.MapRoute("default", "{Controller}/{action}/{id}",
+                new {Controllers="Home", Action="Index"},
+                new
+                {
+                    id=new CompositeRouteConstraint(
+                         new IRouteConstraint[]
+                         {
+                            new AlphaRouteConstraint(), // id kiểu alpha(chữ)
+                            new MinLengthRouteConstraint(6) // Từ 6 kí tự trở lên
+                         })
+                 });
+
+_Action method_
+- ActionName: Sử dụng attribute này khi muốn change name của action
+- Non Action: Sử dụng attribute này để đánh dấu action không cho public
+- Action Verbs: Các verbs(HttpGet/HttpPut/HttpPost/HttpDelete/...) giúp mapping tới các action method khác nhau(mặc dù url giống)
+
+_Action result_
+- Action result có thể return về 1 số định dạng sau:
+ + HTML: View() hoặc PartialView()
+ + Redirect: Redirect()
+ + File:
+ + Content result:
+ + Error and HTTP code:
+ + Sercurity result: authen result
+
+_View_
+- Gen giao diện dựa vào data
+
+_Layouts_
+- Sử dụng để tạo sự đồng nhất cho bố cục các trang
+- Sử dụng <article> @RenderBody() </article> : đển render content
+- Sử dụng 
+@{
+    Layout = "_Layouts"; // Sử dụng layout "_Layouts"
+}
+- Có thể sử dụng Partial view(trường hợp nhiều page sử dụng layout mà không muốn khai báo như trên)
+ + Tạo _ViewStart.cshtml nằm cùng cấp với folder Shared
+ + @{
+    Layout = "_Layouts"; // Sử dụng layout "_Layouts"
+    }
+=> Lúc này tất cả các page sẽ default sử dụng layout "_Layouts" mà không cần phải khai báo trong bản thân nó
+
+- Sử dụng (trường hợp có không muốn sử dụng layout)
+@{
+    Layout = null; // Không Sử dụng layout "_Layouts"
+}
+
+_Partial view_(File nằm trong Views và cùng cấp vs Shared folder chứ không như _Layout.cshtml)
+- là Layout được setting default cho việc use a layout page(không cần phải mỗi lần sử dụng phải add reference)
+
+_Razor view angine_
+- @Html.Raw({variable}) : Sử dụng đối với 1 số nội dung chưa <script>
+
+_Section_
+- Sử dụng @RenderSection("keyword",required:...) để control vị trí hiển thị cho từng đối tượng
+
+_Model & ViewModel & EditModel_
+- Model: Ánh xạ DB
+- ViewModel: Xử lý DB hoặc logic để show lên View
+- EditModel: Xử lý DB ở View(form edit, validate, selected)
+
+_Validate Model_
+-  Validate Client/Server
+- Sử dụng asp-validation-for="{item}"
+- Sử dụng asp-validation-summary="All" : tất cả lỗi
+	  asp-validation-summary="ModelOnly": lỗi thuộc về model
+	  asp-validation-summary="None": không hiển thị lỗi
+- 
+
+_Model Binding_: Truyền dữ liệu từ View sang Controller 
+(submit dữ liệu qua form, query string, router, request header/body)
+- Mapping data được post thông qua HTTP request đến Action method controller
+- Sử dụng ModelState.IsValid để check xem việc binding có thành công không
+- Sử dụng các Attribute để controll việc get data từ đâu
+ví dụ:
+ + [FromQuery]: get data từ câu query
+ url: /home/formandquery/?name=test (query là string được tính sau dấu ?)
+ + [FromRoute]: get data từ route
+ + [FromServices],[FromHeader],[FromBody],[FromForm]
+
+- Sử dụng [BindNever] attribute để chặn binding thuộc tính
+
+
+
+_Truyền dữ liệu từ Controller sang View_: Có 3 cách để truyền dữ liệu
+- ViewBag,ViewData,Strongly Typed View
+
+_ViewBag & ViewData & Strongly Typed View_
+- ViewData: Sử dụng với format ViewData["{variable}"], truy xuất theo key nên cho phép có khoảng trắng trong key
+Ở View cần @using DB
+- ViewBag: Sử dụng với format ViewBag.Greeting, truy xuất như là object(không cho phép khoảng trắng)
+Khi dùng @ViewBag.Product?.Name (có thể check null)
+Ở View cần @using DB
+- Strongly Typed View: 
+Truyền data qua View: return View({data});
+Ở view chỉ cần : @Model.{property} để sử dụng
+
+
+_Form HTML_
+
+_Tag Helper_: Thân thiện như html, có gợi ý, dễ code và mở rộng hơn.
+- @addTagHelper* : Sử dụng tất cả các Tag Helper vào View.
+- @addTagHelperPrefix th :Sử dụng Tag Helper Prefix.
+- @removeTagHelper"* : Remove tất cả các Tag Helper
+- Nếu không muốn sử dụng Tag Helper cho 1 item thì sử dụng ! trước item đó
+- Sử dụng file _ViewImports.cshtml để add Tag Helpers thay vì add mỗi View
+- DataType của Tag Helpers có thể set bởi 3 yếu tố: value type của biến, property type của biến, type ở html
+Vd:
+Add vào model: @model WebAppForm.Models.ProductEditModel;
+Unclude tag helpers: @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+Dưới html chỉ cần gọi thẳng tới property của model
+
+- Environment TagHelper: 
+ + Support render code dựa vào biến môi trường.
+ + ví dụ: 
+*Sử dụng thư viện js phụ thuộc vào Environment
+<environment names="Development">
+   <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+</environment>
+<environment names="Production">
+   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</environment>
+*hoặc (sử dụng include/exclude như if/esle)
+<environment include="Development">
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+</environment>
+<environment exclude="Development">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</environment>
+
+
+- Unobtrusive: Giúp việc sử dụng validate ở phía Client giống như Server(viết 1 code validate cả 2)
+ + Sử dụng thư viện của js: jquery.validate.unobtrusive.js
+ + Lúc này những validate attribute ở model cũng sẽ đc map để check ở Client luôn, 
+thay vì việc sẽ send request lên rồi mới check sẽ lâu
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
+
+_Dependency Injection_
+- Có 3 mode để thực hiện DependencyInjection: Transient, Scoped, Singleton
+ + Transient: Tạo Instance khi service được tạo (có thể có n Instance)
+(Phù hợp vs các service nhẹ nhỏ, không chứa trạng thái)
+ + Scoped: Tạo Instace generate trong 1 request, service thì được sử dụng lại(chỉ 1 Instance cho 1 request)
+(Phù hợp maintain trạng thái trong 1 request )
+ + Singleton: Tạo Instace 1 lần và sử dụng(chỉ 1 Instance cho cả quá trình Run của App)
+Note: Nên Inject những service cùng loại vòng đời, 
+Nếu Infject nhiều loại service thì sẽ bị lấy theo loại service có vòng đời cao nhất
+Thứ tự: (Transient < Scoped < Singleton)
+
+- Sử dụng services.AddTransient<IProductService, ProductService>();
+IProductService: Interface sẽ Inject vào
+ProductService: Class được sử dụng làm Instance inject
+
+_HTTP Request_
+- Get: Lấy thông tin từ server dựa vào URL.(Gửi request lên không có body)
+- Head: Giống như Get(Lấy thông tin từ server dựa vào URL) nhưng response chỉ có Header không có Body.
+- Post: Gửi thông tin tới server thông qua các biểu mẫu(form register,login,...).(Gửi request lên có body)
+- Put: Ghi đè tất cả thông tin của đối với những gì được gửi lên.
+- Patch: Ghi đè các thông tin được thay đổi của đối tượng.
+- Delete: Xóa tài nguyên trên Server.
+- Connect: Thiết lập 1 kết nối tới Server theo URL.
+- Options: Mô tả các options giao tiếp cho Resource.
+- Trace: Thực hiện 1 bài test loop-back theo đường dẫn đến Resource
+
+_Idempotent trong thiết kế RESTful API_
