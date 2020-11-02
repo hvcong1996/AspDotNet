@@ -8,23 +8,19 @@
     ".NETCoreApp,Version=v3.1": []
   },
   "packageFolders": {
-    "C:\\Users\\hvcong.TMA\\.nuget\\packages\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\Admin\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\CodeNote\\C#\\Asp.Net 3.x\\eShopApplicaton\\eShop.WebApp\\eShop.WebApp.csproj",
+      "projectUniqueName": "D:\\_PROJECT\\Asp.Net_Core\\eShopApplicaton\\eShop.WebApp\\eShop.WebApp.csproj",
       "projectName": "eShop.WebApp",
-      "projectPath": "C:\\CodeNote\\C#\\Asp.Net 3.x\\eShopApplicaton\\eShop.WebApp\\eShop.WebApp.csproj",
-      "packagesPath": "C:\\Users\\hvcong.TMA\\.nuget\\packages\\",
-      "outputPath": "C:\\CodeNote\\C#\\Asp.Net 3.x\\eShopApplicaton\\eShop.WebApp\\obj\\",
+      "projectPath": "D:\\_PROJECT\\Asp.Net_Core\\eShopApplicaton\\eShop.WebApp\\eShop.WebApp.csproj",
+      "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+      "outputPath": "D:\\_PROJECT\\Asp.Net_Core\\eShopApplicaton\\eShop.WebApp\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-      ],
       "configFilePaths": [
-        "C:\\Users\\hvcong.TMA\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -65,7 +61,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.403\\RuntimeIdentifierGraph.json"
       }
     }
   }

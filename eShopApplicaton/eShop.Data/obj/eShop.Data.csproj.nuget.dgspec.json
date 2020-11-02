@@ -1,23 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\CodeNote\\C#\\Asp.Net 3.x\\eShopApplicaton\\eShop.Data\\eShop.Data.csproj": {}
+    "D:\\_PROJECT\\Asp.Net_Core\\eShopApplicaton\\eShop.Data\\eShop.Data.csproj": {}
   },
   "projects": {
-    "C:\\CodeNote\\C#\\Asp.Net 3.x\\eShopApplicaton\\eShop.Data\\eShop.Data.csproj": {
+    "D:\\_PROJECT\\Asp.Net_Core\\eShopApplicaton\\eShop.Data\\eShop.Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\CodeNote\\C#\\Asp.Net 3.x\\eShopApplicaton\\eShop.Data\\eShop.Data.csproj",
+        "projectUniqueName": "D:\\_PROJECT\\Asp.Net_Core\\eShopApplicaton\\eShop.Data\\eShop.Data.csproj",
         "projectName": "eShop.Data",
-        "projectPath": "C:\\CodeNote\\C#\\Asp.Net 3.x\\eShopApplicaton\\eShop.Data\\eShop.Data.csproj",
-        "packagesPath": "C:\\Users\\hvcong.TMA\\.nuget\\packages\\",
-        "outputPath": "C:\\CodeNote\\C#\\Asp.Net 3.x\\eShopApplicaton\\eShop.Data\\obj\\",
+        "projectPath": "D:\\_PROJECT\\Asp.Net_Core\\eShopApplicaton\\eShop.Data\\eShop.Data.csproj",
+        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+        "outputPath": "D:\\_PROJECT\\Asp.Net_Core\\eShopApplicaton\\eShop.Data\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\hvcong.TMA\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -73,7 +70,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.403\\RuntimeIdentifierGraph.json"
         }
       }
     }
