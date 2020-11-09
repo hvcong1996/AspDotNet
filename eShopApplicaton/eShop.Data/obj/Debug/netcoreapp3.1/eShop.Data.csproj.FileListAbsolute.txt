@@ -6,3 +6,7 @@ D:\_PROJECT\Asp.Net_Core\eShopApplicaton\eShop.Data\obj\Debug\netcoreapp3.1\eSho
 D:\_PROJECT\Asp.Net_Core\eShopApplicaton\eShop.Data\bin\Debug\netcoreapp3.1\eShop.Data.runtimeconfig.json
 D:\_PROJECT\Asp.Net_Core\eShopApplicaton\eShop.Data\bin\Debug\netcoreapp3.1\eShop.Data.runtimeconfig.dev.json
 D:\_PROJECT\Asp.Net_Core\eShopApplicaton\eShop.Data\obj\Debug\netcoreapp3.1\eShop.Data.genruntimeconfig.cache
+D:\_PROJECT\Asp.Net_Core\eShopApplicaton\eShop.Data\bin\Debug\netcoreapp3.1\eShop.Data.pdb
+D:\_PROJECT\Asp.Net_Core\eShopApplicaton\eShop.Data\obj\Debug\netcoreapp3.1\eShop.Data.csproj.CoreCompileInputs.cache
+D:\_PROJECT\Asp.Net_Core\eShopApplicaton\eShop.Data\obj\Debug\netcoreapp3.1\eShop.Data.dll
+D:\_PROJECT\Asp.Net_Core\eShopApplicaton\eShop.Data\obj\Debug\netcoreapp3.1\eShop.Data.pdb
